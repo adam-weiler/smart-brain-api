@@ -42,23 +42,23 @@ app.get('/', (request, response) => {
 })
 
 app.post('/signin', (request, response) => { //This is for the user signing in.
-	bcrypt.compare("piano", '$2a$10$cfgEwHwR7YLyBrg5Ow9bMeM3uvkMYmcvvYxTQq/1ucVNp.i.z7ySW', function(err, result) {
-		console.log("First guess is right.")		
-	})
+	// bcrypt.compare("piano", '$2a$10$cfgEwHwR7YLyBrg5Ow9bMeM3uvkMYmcvvYxTQq/1ucVNp.i.z7ySW', function(err, result) {
+	// 	console.log("First guess is right.")		
+	// })
 
-	bcrypt.compare("veggies", '$2a$10$cfgEwHwR7YLyBrg5Ow9bMeM3uvkMYmcvvYxTQq/1ucVNp.i.z7ySW', function(err, result) {
-		console.log("Second guess is wrong.")	
-	})
+	// bcrypt.compare("veggies", '$2a$10$cfgEwHwR7YLyBrg5Ow9bMeM3uvkMYmcvvYxTQq/1ucVNp.i.z7ySW', function(err, result) {
+	// 	console.log("Second guess is wrong.")	
+	// })
 
 	//Checks if the request from the body of browser is same as database.
 	if (request.body.email === database.users[0].email &&
-	request.body.password === database.users[0].password) {
-		response.json("Success logging in!");
+		request.body.password === database.users[0].password) {
+		response.json(database.users[0]);
+		//response.json("Success logging in!");
 	} else {
 		response.status(400).json('Error logging in.');
 	}
 })
-
 
 app.post('/register', (request, response) => { //This is for the user registering new account.
 	const { email, name, password } = request.body; //Use destructuring to get data from user.
@@ -71,13 +71,11 @@ app.post('/register', (request, response) => { //This is for the user registerin
 		id: '789',
 		name: name,
 		email: email,
-		password: password,
 		entries: 0,
 		joined: new Date()
 	});
 	response.json(database.users[database.users.length-1]); //Last registered user.
 });
-
 
 app.get('/profile/:id', (request, response) => { //This shows the user their profile page.
 	const { id } = request.params; //Use destructuring to get data from user.
@@ -86,7 +84,8 @@ app.get('/profile/:id', (request, response) => { //This shows the user their pro
 	database.users.forEach(users => { //Loop through the database.
 		if (users.id === id) { //Check if current iteration id is same as data from user.
 			found = true;
-			return response.json(users);
+			//return response.json(users);
+			return res.json(database.users[0]);
 		}
 	});
 
@@ -95,8 +94,7 @@ app.get('/profile/:id', (request, response) => { //This shows the user their pro
 	}
 });
 
-
-app.post('/image', (request, response) => { //Add one to users rank.
+app.put('/image', (request, response) => { //Add one to users rank.
 	const { id } = request.body; //Use destructuring to get data from user.
 	let found = false;
 
