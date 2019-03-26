@@ -1,5 +1,10 @@
 const handleRegister = (req, res, db, bcrypt) => { //This is for the user registering new account.
 	const { email, name, password } = req.body; //Use destructuring to get data from user.
+
+	if (!email || !name || !password) {
+		return res.status(400).json('incorrect form submission');
+	}
+
 	const hash = bcrypt.hashSync(password);
 	// bcrypt.hash(password, null, null, function(err, hash) { //Bcrypt hashes the user's password.
 	// 	console.log(hash);
@@ -29,7 +34,7 @@ const handleRegister = (req, res, db, bcrypt) => { //This is for the user regist
 	})
 
 		
-		.catch(err => res.status(400).json('unable to register'))
+	.catch(err => res.status(400).json('unable to register'))
 }
 
 module.exports = {

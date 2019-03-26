@@ -32,7 +32,7 @@ app.use(cors())
 
 app.get('/', (req, res) => {
 	//res.send('This is working!!');
-	res.send(database.users);
+	res.send('It is working!');
 })
 
 //app.post('/signin', (req, res) => { signin.handleSignIn(req, res, db, bcrypt) }); //This is for the user signing in to account. //Basic
@@ -44,14 +44,18 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) }
 
 app.put('/image', (req, res) => { image.handleImage(req, res, db) }); //Use destructuring to get data from user.
 
-app.listen(3000, ()=> {
-	console.log("It's running on port 3000!")
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) }); //Use destructuring to get data from user.
+
+app.listen(process.env.PORT || 3000, ()=> {
+	console.log(`It's running on port ${process.env.PORT}!`)
 })
 
 /*
+
 / ---> response = this is working
 /signin ---> POST request = success or fail 	-- An old user has signed in.
 /register ---> POST request = return new user object 	-- A new user has registered.
 /profile/:userId ---> GET = user 	-- Show the user profile by their id.
 /image ---> PUT --> user 	-- Updates the count of who has the highest ranking.
+
 */
